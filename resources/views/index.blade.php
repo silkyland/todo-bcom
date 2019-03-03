@@ -1,11 +1,14 @@
 @extends('layout.master')
 @section('content')
+
 <p>กรองสถานะ : <a href="#">ทั้งหมด</a> | <a href="#">Completed</a> | <a href="#">Incomplete</a></p>
 <div class="panel panel-default">
     <div class="panel-heading">
         <h4 class="panel-title">
             <i class="fa fa-list"></i> รายการที่ต้องทำ
+            @if(auth()->check())
             <span class="pull-right"><a href="/create" class="btn btn-xs btn-success"><i class="fa fa-plus"></i> เพิ่มรายการ</a></span>
+            @endif
         </h4>
     </div>
     <table class="table table-striped table-hover">
@@ -15,38 +18,34 @@
             <th>ชื่อรายการ</th>
             <th>หมวดหมู่</th>
             <th>สถานะ</th>
+            @if(auth()->check())
             <th>จัดการ</th>
+            @endif
         </tr>
         </thead>
         <tbody>
+        @foreach($posts as $item)
         <tr>
-            <td>1</td>
-            <td>ซื้อสินค้าที่ Super Market</td>
-            <td>Shopping</td>
-            <td>Incomplete</td>
+            <td>{{$item->id}}</td>
+            <td>{{$item->detail}}</td>
+            <td>{{$item->category->name}}</td>
             <td>
-                <a href="#" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i> edit</a>
-                <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-times"></i> delete</a>
+                @if($item->complete == 0)
+                    ยังไม่ทำ
+                @else
+                    ทำเสร็จแล้ว
+                @endif
             </td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>พาหมาไปวิ่งเล่น</td>
-            <td>Activity</td>
-            <td>Completed</td>
+            @if(auth()->check())
             <td>
-                <a href="#" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i> edit</a>
-                <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-times"></i> delete</a>
+                <a href="/edit/{{$item->id}}" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i> edit</a>
+                <a href="/delete/{{$item->id}}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i> delete</a>
             </td>
+            @endif
         </tr>
+        @endforeach
         </tbody>
     </table>
 </div>
-<ul class="pagination">
-    <li><a href="#">1</a></li>
-    <li class="active"><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
-</ul>
-    @endsection
+    {{$posts->links()}}
+@endsection

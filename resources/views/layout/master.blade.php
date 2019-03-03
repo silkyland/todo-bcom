@@ -15,6 +15,11 @@
 <body>
 <div class="container">
     <h1><i class="fa fa-list"></i> Todo List ::</h1>
+    @if(auth()->check())
+        <p> ยินดีต้อนรับ {{auth()->user()->fullname}}, <a href="/logout">ออกจากระบบ</a> </p>
+    @else
+        <p>สวัสดีผู้ใช้ทั่วไป, โปรด <a href="/login">เข้าสู่ระบบ</a></p>
+    @endif
     @yield('content')
     <hr>
     <p>&copy; 2017 Bundit Nuntates</p>

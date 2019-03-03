@@ -9,10 +9,20 @@
                     </h4>
                 </div>
                 <div class="panel-body">
-                    <form action="/login">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    <form action="/login" method="POST">
+                        {{ csrf_field() }}
                         <div class="form-group">
-                            <label for="inputUsername">USERNAME: </label>
-                            <input type="text" name="username" placeholder="กรอก username" class="form-control">
+                            <label for="inputUsername">Email: </label>
+                            <input type="email" name="email" placeholder="กรอก อีเมล์" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="inputUsername">PASSWORD: </label>
